@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_aiw/views/login_page.dart';
+import 'dart:io' show Platform;
 
 void main() {
   runApp(const MyApp());
@@ -14,12 +16,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sample Login Page',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Sample Login Page'),
-        ),
-        body: LoginPage(),
-      ),
+      home: commonScaffold(),
     );
+  }
+
+  // common scaffold for android and ios
+  Widget commonScaffold() {
+    if (Platform.isAndroid) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Sample Login Page'),
+        ),
+        body: const SingleChildScrollView(child: LoginPage()),
+      );
+    } else if (Platform.isIOS) {
+      return const CupertinoPageScaffold(
+          navigationBar: CupertinoNavigationBar(
+            middle: Text('Sample Login Page'),
+          ),
+          child: SafeArea(child: SingleChildScrollView(child: LoginPage(),))
+      );
+    } else {
+      return Container();
+    }
   }
 }
