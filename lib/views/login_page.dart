@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
+import 'package:universal_io/io.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -75,8 +77,20 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                   );
+                } else if (kIsWeb) {
+                  return TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person),
+                      constraints: BoxConstraints(
+                        maxWidth: 300,
+                      ),
+                      border: OutlineInputBorder(),
+                      labelText: 'UserName',
+                    ),
+                  );
                 } else {
-                  return Container();
+                  return const Text('');
                 }
               }),
             ),
@@ -101,6 +115,18 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(4.0),
+                    ),
+                  );
+                } else if (kIsWeb) {
+                  return TextField(
+                    controller: passwordController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.key),
+                      constraints: BoxConstraints(
+                        maxWidth: 300,
+                      ),
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
                     ),
                   );
                 } else {
@@ -137,8 +163,15 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (_) {
                           updateSwitchState();
                         });
+                  } else if (kIsWeb) {
+                    return Checkbox(
+                      value: switchState,
+                      onChanged: (_) {
+                        updateSwitchState();
+                      },
+                    );
                   } else {
-                    return Container();
+                    return const Text('');
                   }
                 }),
               ],
@@ -167,8 +200,19 @@ class _LoginPageState extends State<LoginPage> {
                         print(passwordController.text);
                       },
                     );
+                  } else if (kIsWeb) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(1, 50),
+                        maximumSize: const Size(1, 50),),
+                      onPressed: () {
+                        print(nameController.text);
+                        print(passwordController.text);
+                      },
+                      child: const Text('Login'),
+                    );
                   } else {
-                    return Container();
+                    return const Text('');
                   }
                 },
               ),
